@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="session4Flow" doc:id="eb692f33-8b7a-4d7a-a28b-50f92b2db6a6" >
+		<http:listener doc:name="Listener" doc:id="dac5586a-c2e8-45de-97ea-066fdaab3f55" config-ref="HTTP_Listener_config" path="/testsession4"/>
+		<ee:transform doc:name="Transform Message" doc:id="0f6f2fe4-3341-4e68-8380-c48db6273efd" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+			<ee:variables >
+				<ee:set-variable variableName="name" ><![CDATA[%dw 2.0
+output application/json
+---
+payload.name]]></ee:set-variable>
+				<ee:set-variable variableName="role" ><![CDATA[%dw 2.0
+output application/json
+---
+payload.role]]></ee:set-variable>
+				<ee:set-variable variableName="company" ><![CDATA[%dw 2.0
+output application/json
+---
+attributes.queryParams.company]]></ee:set-variable>
+			</ee:variables>
+		</ee:transform>
+		<ee:transform doc:name="Transform Message" doc:id="3b060924-0f60-47b4-883d-4e97cc083404" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+p('message') ++ ": " ++ vars.name as String ++ " You are a " ++ vars.role as String ++ " working for " ++ vars.company as String]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
